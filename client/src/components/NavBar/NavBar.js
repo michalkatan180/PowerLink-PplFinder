@@ -1,0 +1,38 @@
+import React, { useState } from "react";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab"; import PropTypes from 'prop-types';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import { usePeopleFetch } from "hooks";
+import Home from "../../pages/Home/Home";
+import { useHistory } from "react-router-dom";
+
+const NavBar = () => {
+  const [value, setValue] = useState(0);
+
+  const handleChange = (_e, newValue) => {
+    setValue(newValue);
+  };
+  const history = useHistory();
+  return (
+
+
+    <AppBar position="static" color="transparent" style={{ position: "fixed", top: 0 }}>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        aria-label="Navigation"
+        indicatorColor="primary"
+        textColor="primary"
+      >
+        <Tab label="Home" index={0} onClick={() => { history.push('/') }} />
+        <Tab label="Favorites" index={1} onClick={() => { history.push('/favorites') }} />
+        <Tab label="Tasks" index={2} onClick={() => { history.push('/tasks') }} />
+
+      </Tabs>
+    </AppBar>
+  );
+};
+
+export default NavBar;
