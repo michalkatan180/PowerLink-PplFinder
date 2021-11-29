@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Text from "components/Text";
-import NavBar from "../../components/NavBar/NavBar";
 import { usePeopleFetch } from "hooks";
 import * as S from "./style";
 import UserList from "../../components/UserList/UserList";
-import { useEffect } from "react";
+
 const Home = () => {
-  const { users, isLoading } = usePeopleFetch();
+  const { users, isLoading ,changePageNumber} = usePeopleFetch();
 
   return (
     <S.Home>
@@ -16,7 +15,7 @@ const Home = () => {
             PplFinder
           </Text>
         </S.Header>
-        <UserList users={users} isLoading={isLoading} />
+        <UserList users={users} isLoading={isLoading} changePageNumber={changePageNumber} />
       </S.Content>
     </S.Home>);
 };

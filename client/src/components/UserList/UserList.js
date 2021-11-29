@@ -6,8 +6,8 @@ import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import * as S from "./style";
 import { setFavorite, getAllFavoriteUsers } from "../../utils/usersUtils";
-import Infinite from 'react-infinite'
-const UserList = ({ users, isLoading }) => {
+
+const UserList = ({ users, isLoading, changePageNumber }) => {
 
   const handleMouseEnter = (index) => { setHoveredUserId(index); };
   const [hoveredUserId, setHoveredUserId] = useState();
@@ -17,12 +17,20 @@ const UserList = ({ users, isLoading }) => {
   const [filters, setFilters] = useState([]);//The countries that the people from these countries, we will represent
   const [favoriteUsers, setFavoriteUsers] = useState([])//The favorite people, to have a pink heart
 
+
   useEffect(() => {
     setUsersArray(users);
     getAllFavoriteUsers().then(succ => {
       if (succ.status != 400) setFavoriteUsers(succ.data);
     });
   }, [])
+
+  const handleScroll = (e) => {
+    let bottom = Math.abs(
+      e.target.scrollHeight - (e.target.scrollTop + e.target.clientHeight) <= 1
+    );
+    if (bottom) changePageNumber();
+  }
 
   const handleFilters = (country) => {
 
@@ -55,8 +63,7 @@ const UserList = ({ users, isLoading }) => {
         <CheckBox onChange={() => handleFilters("Turkey")} value="EU" id="Germany" label="Turkey" />
       </S.Filters>
 
-      <Infinite containerHeight={450} elementHeight={180}>
-
+      <S.List onScroll={handleScroll}>
         {usersArray && usersArray.map((user, index) => {
           return (
             <S.User
@@ -99,8 +106,7 @@ const UserList = ({ users, isLoading }) => {
             <Spinner color="primary" size="45px" thickness={6} variant="indeterminate" />
           </S.SpinnerWrapper>
         )}
-
-      </Infinite>
+      </S.List>
 
 
     </S.UserList>
